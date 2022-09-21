@@ -12,19 +12,49 @@
 
 
 
+/*  Clases  */
+class tempProgramada {
+    constructor(ambiente, tDeseada, hInicio, hFinal){
+        this.ambiente = ambiente;
+        this.tDeseada = tDeseada;
+        this.hInicio = hInicio;
+        this.hFinal = hFinal;
+    }
+
+    informacion(){
+        alert('Ambiente: '+ this.ambiente + '.- Temp.Deseada: ' + this.tDeseada + '°C.- H.Inicio: ' + this.hInicio + 'hs.- H.Final: ' + this.hFinal + 'hs.');
+    }
+}
+
+/*  Array de Temperaturas   */
+tempAmbientes = [];
+
+/*  Instancias (Objetos) de la Clase 'tempProgramada'    */
+tempAmbientes.push(new tempProgramada('Habitacion', 28 , 6.00 , 7.00));
+
+tempAmbientes.push(new tempProgramada('Living', 25 , 7.00 , 8.00));
+
+
+
+
+
+
+
 /*  Funciones   */
-function controlTemperatura(temperaturaActual, temperaturaDeseada, horaActual) {
-    if(((horaActual >= 6) & (horaActual <= 8)) | ((horaActual >= 16.5) & (horaActual <= 22.5))) {
-        if(temperaturaActual < temperaturaDeseada){
-            alert('Calentando el ambiente...');
-        }else if(temperaturaActual > temperaturaDeseada){
-            alert('Enfriando el ambiente...');
-        }else{
-            alert('Temperatura en su punto justo...');
+function controlTemperatura(temperaturaActual, horaActual) {
+    for(const amb of tempAmbientes){
+        if(((horaActual >= amb.hInicio) && (horaActual <= amb.hFinal))) {
+            if(temperaturaActual < amb.tDeseada){
+                alert('Calentando el ambiente: ' + amb.ambiente);
+            }else if(temperaturaActual > amb.tDeseada){
+                alert('Enfriando el ambiente: ' + amb.ambiente);
+            }else{
+                alert(amb.ambiente + ' con la Temperatura en su punto justo...');
+            }
+            alert('Temperatura Controlada en Ambiente: ' + amb.ambiente);
+        } else {
+            alert('Horario Fuera de Control para el Ambiente: ' + amb.ambiente);
         }
-        alert('Temperatura Controlada.');
-    } else {
-        alert('Horario Fuera de Control.');
     }
 }
 
@@ -32,8 +62,8 @@ function ingresoTemperatura() {
     let temperatura = 0;
     
     do{
-        temperatura = Number(prompt('Ingrese una Temperatura (Mín: -20°C ; Máx: 60°C), por favor: '));
-    }while((temperatura < -20) | (temperatura > 60));
+        temperatura = Number(prompt('Ingrese la Temperatura Actual (Mín: -20°C ; Máx: 60°C), por favor: '));
+    }while((temperatura < -20) || (temperatura > 60));
     
     return temperatura;
 }
@@ -43,7 +73,7 @@ function ingresoHora() {
 
     do{
         hora = parseFloat(prompt('Ingrese una Hora en formato fraccionario (ej. 21:45hs --> 21.75 [hs]), por favor: '));
-    }while((hora < 0) | (hora > 23.99));
+    }while((hora < 0) || (hora > 23.99));
 
     return hora;
 }
@@ -52,15 +82,12 @@ function ingresoHora() {
 let cantidadMediciones = parseInt(prompt('Ingrese cuantas mediciones desea realizar: '));
 
 for(let i=0; i < cantidadMediciones; i++){
-    alert('Temperatura Actual');
+    
     let tempActual = ingresoTemperatura();
     
-    alert('Temperatura Deseada');
-    let tempDeseada = ingresoTemperatura();
-
     let hoActual = ingresoHora();
 
-    controlTemperatura(tempActual, tempDeseada, hoActual);
+    controlTemperatura(tempActual, hoActual);
 }
 
 alert('Gracias por usar nuestro Sistema ;-)');
